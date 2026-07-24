@@ -1,7 +1,11 @@
-import { Card, Text, Badge, Group, Stack } from "@mantine/core";
+import { Card, Text, Badge, Group, Stack, Button } from "@mantine/core";
 import type { Task, TaskStatus, TaskPriority } from "../types/task";
 
-type Props = { task: Task };
+type Props = {
+  task: Task;
+  onToggle: (id: string) => void;
+  onRemove: (id: string) => void;
+};
 
 // status/priorityを色に対応づける小さなヘルパー
 const statusColor: Record<TaskStatus, string> = {
@@ -16,7 +20,7 @@ const priorityColor: Record<TaskPriority, string> = {
   high: "red",
 };
 
-export function TaskItem({ task }: Props) {
+export function TaskItem({ task, onToggle, onRemove }: Props) {
   return (
     <Card withBorder padding="md" radius="md">
       <Stack gap="xs">
@@ -42,6 +46,20 @@ export function TaskItem({ task }: Props) {
           </Text>
         )}
         {task.note && <Text size="sm">{task.note}</Text>}
+
+        <Group gap="xs">
+          <Button size="xs" variant="light" onClick={() => onToggle(task.id)}>
+            {task.status == "done" ? "未完了に戻す" : "完了にする"}
+          </Button>
+          <Button
+            size="xs"
+            variant="light"
+            color="red"
+            onClick={() => onRemove(task.id)}
+          >
+            削除
+          </Button>
+        </Group>
       </Stack>
     </Card>
   );
