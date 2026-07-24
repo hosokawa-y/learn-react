@@ -11,3 +11,5 @@ export type Task = {
   note: string;
   createdAt: string;
 };
+
+export type TaskDraft = Omit<Task, "id" | "createdAt">;
